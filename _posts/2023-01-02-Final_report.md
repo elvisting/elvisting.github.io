@@ -2,29 +2,42 @@
 layout: post
 title: 運用DRQN及C15訓練遊戲之強化學習
 author: [mochi_pancake_elvisting]
-category: [Lecture]
-tags: [jekyll, ai]
+category: [AI]
+tags: [jekyll, ai, reinforce_learning]
+
 ---
 
 期末專題實作:運用DRQN及C15訓練遊戲之強化學習
 
 ---
+
 ## 運用DRQN及C15訓練遊戲之強化學習
+
 ### 組員
 00953150 鄭丞恩  
 00953128 丁昱鈞  
 00953101 李承恩
+### 研究動機及目的
+# **研究動機**：
+起初，我們想實作老師提供的題目"四足機器狗之強化學習"，在安裝軟體(REX_GYM)的過程中遇到了些問題，因為我們使用Windows系統，所以必須額外裝微軟的開發套件，導致我們只有部分電腦安裝成功，除此之外，在實際摸索過後，我們只透過內建指令，跑出幾個訓練集，更換場景與姿勢等，但還是不太了解這個軟體如何訓練機器狗，是否需要實體機器，以及如何達成當初的構想，走出迷宮或是跑到指定定點等，為了更了解強化學習的過程，我們決定從頭研究，並藉由"用python實作強化學習：使用 TensorFlow 與 OpenAl Gym"這本書的內容幫助我們學習。
+
+# **研究目的**：
+藉由此次實作，註解範例程式碼，比較深度學習的方法，使自己深入了解強化學習的運作以及程式設計。
 ### 系統簡介及功能說明
-# **系統簡介**:
+
+# **系統簡介**：
 初步想法:  
 1.做出地圖並訓練狗狗走出ex:單一出口的封閉空間  
 2.隨機丟出物品並讓狗狗撿取並回到原位
-# **功能說明**:
+# **功能說明**：
+
 ---
 ### 系統方塊圖
 
-演算法模型說明  
-```
+
+### 演算法模型說明 
+DRQN演算法與程式碼：
+```python
 class DRQN():
     def __init__(self, input_shape, num_actions, inital_learning_rate):
         # 初始化所有超參數
@@ -55,7 +68,8 @@ class DRQN():
         self.poolsize = 2        
         
         # 設定卷積層形狀
-        self.convolution_shape = get_input_shape(input_shape[0], self.filter_size, self.stride) * get_input_shape(input_shape[1], self.filter_size, self.stride) * self.num_filters[2]
+        self.convolution_shape = 
+        get_input_shape(input_shape[0], self.filter_size, self.stride) * get_input_shape(input_shape[1], self.filter_size, self.stride) * self.num_filters[2]
         
         # 定義循環神經網路與最終前饋層的超參數
         
@@ -72,7 +86,6 @@ class DRQN():
         self.loss_decay_rate = 0.96
         self.loss_decay_steps = 180
 
-        
         # 初始化CNN的所有變數
 
         # 初始化輸入的佔位，形狀為(length, width, channel)
@@ -91,10 +104,8 @@ class DRQN():
         
         self.features3 = tf.Variable(initial_value = np.random.rand(self.filter_size, self.filter_size, self.num_filters[1], self.num_filters[2]),
                                      dtype = self.tfcast_type)
-
         # 初始化RNN變數
         # 討論RNN的運作方式
-        
         self.h = tf.Variable(initial_value = np.zeros((1, self.cell_size)), dtype = self.tfcast_type)
         
         # 隱藏層對隱藏層的權重矩陣
@@ -111,8 +122,7 @@ class DRQN():
                                             size = (self.cell_size, self.cell_size)),
                               dtype = self.tfcast_type)
         
-        # hiddent to output weight matrix
-                          
+        # 隱藏層對輸出層的權重矩陣
         self.rV = tf.Variable(initial_value = np.random.uniform(
                                             low = -np.sqrt(6. / (2 * self.cell_size)),
                                             high = np.sqrt(6. / (2 * self.cell_size)),
@@ -122,7 +132,6 @@ class DRQN():
         self.rb = tf.Variable(initial_value = np.zeros(self.cell_size), dtype = self.tfcast_type)
         self.rc = tf.Variable(initial_value = np.zeros(self.cell_size), dtype = self.tfcast_type)
 
-        
         # 定義前饋網路的權重與偏差
         
         # 權重
@@ -130,8 +139,7 @@ class DRQN():
                                             low = -np.sqrt(6. / (self.cell_size + self.num_actions)),
                                             high = np.sqrt(6. / (self.cell_size + self.num_actions)),
                                             size = (self.cell_size, self.num_actions)),
-                              dtype = self.tfcast_type)
-                             
+                              dtype = self.tfcast_type)              
         # 偏差
         self.fb = tf.Variable(initial_value = np.zeros(self.num_actions), dtype = self.tfcast_type)
 
@@ -142,12 +150,11 @@ class DRQN():
                                                    self.loss_decay_steps,
                                                    self.loss_decay_steps,
                                                    staircase = False)
-        
-        
         # 建置網路
 
         # 第一卷積層
-        self.conv1 = tf.nn.conv2d(input = tf.reshape(self.input, shape = (1, self.input_shape[0], self.input_shape[1], self.input_shape[2])), filter = self.features1, strides = [1, self.stride, self.stride, 1], padding = "VALID")
+        self.conv1 = tf.nn.conv2d(input = tf.reshape(self.input, shape = (1, self.input_shape[0], self.input_shape[1], self.input_shape[2])), 
+        filter = self.features1, strides = [1, self.stride, self.stride, 1], padding = "VALID")
         self.relu1 = tf.nn.relu(self.conv1)
         self.pool1 = tf.nn.max_pool2d(self.relu1, ksize = [1, self.poolsize, self.poolsize, 1], strides = [1, self.stride, self.stride, 1], padding = "SAME")
 
@@ -164,7 +171,6 @@ class DRQN():
         # 加入 dropout 並重新設定輸入外形
         self.drop1 = tf.nn.dropout(self.pool3, self.dropout_probability[0])
         self.reshaped_input = tf.reshape(self.drop1, shape = [1, -1])
-
 
         # 建置循環神經網路，會以卷積網路的最後一層作為輸入
         self.h = tf.tanh(tf.matmul(self.reshaped_input, self.rW) + tf.matmul(self.h, self.rU) + self.rb)
@@ -191,6 +197,7 @@ class DRQN():
                            self.rW, self.rU, self.rV, self.rb, self.rc,
                            self.fW, self.fb)
 ```
+定義ExperienceReplay類別來實作經驗回放緩衝，取樣經驗來訓練網路：
 ```
 class ExperienceReplay():
     def __init__(self, buffer_size):
@@ -210,7 +217,6 @@ class ExperienceReplay():
                 self.buffer.remove(self.buffer[0])     
         self.buffer.append(memory_tuplet)  
         
-        
     # 定義 sample 函式來隨機取樣n個轉移  
     
     def sample(self, n):
@@ -220,12 +226,203 @@ class ExperienceReplay():
             memories.append(self.buffer[memory_index])
         return memories
 ```
+定義用於訓練網路的train函式：
+```
+def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cfg", map_path = 'map02', render = False):
+  
+    # 計算Q值的折扣因子
+    discount_factor = .99
+    
+    # 更新緩衝中經驗的頻率
+    update_frequency = 5
+    store_frequency = 50
+    
+    # 顯示輸出結果
+    print_frequency = 1000
+
+    # 初始化儲存總獎勵及總損失的變數
+    total_reward = 0
+    total_loss = 0
+    old_q_value = 0
+
+    # 初始化儲存世代獎勵的清單
+    rewards = []
+    losses = []
+
+    # 動作表現
+   
+    # 初始化遊戲環境
+    game = viz.DoomGame()
+    
+    # 指定情境檔案路徑
+    game.set_doom_scenario_path(scenario)
+    
+    # 指定地圖檔案路徑
+    game.set_doom_map(map_path)
+
+    # 設定螢幕解析度與格式
+    game.set_screen_resolution(viz.ScreenResolution.RES_256X160)    
+    game.set_screen_format(viz.ScreenFormat.RGB24)
+
+    # 設定以下參數為 true or false 來加入粒子與效果
+    game.set_render_hud(False)
+    game.set_render_minimal_hud(False)
+    game.set_render_crosshair(False)
+    game.set_render_weapon(True)
+    game.set_render_decals(False)
+    game.set_render_particles(False)
+    game.set_render_effects_sprites(False)
+    game.set_render_messages(False)
+    game.set_render_corpses(False)
+    game.set_render_screen_flashes(True)
+
+    # 指定代理可用的按鈕
+    game.add_available_button(viz.Button.MOVE_LEFT)
+    game.add_available_button(viz.Button.MOVE_RIGHT)
+    game.add_available_button(viz.Button.TURN_LEFT)
+    game.add_available_button(viz.Button.TURN_RIGHT)
+    game.add_available_button(viz.Button.MOVE_FORWARD)
+    game.add_available_button(viz.Button.MOVE_BACKWARD)
+    game.add_available_button(viz.Button.ATTACK)
+    
+    # 加入一個名為 delta 的按鈕
+    # 上述按鈕作用類似鍵盤，所以只會回傳布林值
+    # 使用 delta 按鈕來模擬滑鼠來回傳正負數，有助於探索環境
+    
+    game.add_available_button(viz.Button.TURN_LEFT_RIGHT_DELTA, 90)
+    game.add_available_button(viz.Button.LOOK_UP_DOWN_DELTA, 90)
+
+    # 初始化動作陣列
+    actions = np.zeros((game.get_available_buttons_size(), game.get_available_buttons_size()))
+    count = 0
+    for i in actions:
+        i[count] = 1
+        count += 1
+    actions = actions.astype(int).tolist()
+
+    # 遊戲變數，裝甲、生命值與殺敵數
+    game.add_available_game_variable(viz.GameVariable.AMMO0)
+    game.add_available_game_variable(viz.GameVariable.HEALTH)
+    game.add_available_game_variable(viz.GameVariable.KILLCOUNT)
+
+    # 設定 episode_timeout 在數個時間步驟後停止該世代
+    # 另外設定 episode_start_time，有助於跳過初始事件
+    
+    game.set_episode_timeout(6 * episode_length)
+    game.set_episode_start_time(10)
+    game.set_window_visible(render)
+    
+    # 設定 set_sound_enable 啟動或關閉音效
+    game.set_sound_enabled(False)
+
+    # 設定生存獎勵為0，即使動作沒有實際作用，代理還是可以每走一步就收到獎勵
+    game.set_living_reward(0)
+
+    # doom 有多種模式，像是 玩家(player), 旁觀者(spectator), 非同步玩家(asynchronous player) and 非同步旁觀者(asynchronous spectator)
+    # 在旁觀者模式，人類來玩遊戲，代理從中學習
+    # 在玩家模式，代理會實際玩遊戲，因此設定為玩家模式
+    game.set_mode(viz.Mode.PLAYER)
+
+    # 初始化遊戲環境
+    game.init()
+
+    # 建立一個DRQN類別的實例，以及actor與目標DRQN網路
+    actionDRQN = DRQN((160, 256, 3), game.get_available_buttons_size() - 2, learning_rate)
+    targetDRQN = DRQN((160, 256, 3), game.get_available_buttons_size() - 2, learning_rate)
+    
+    # 建立一個 ExperienceReplay 類別的實例class，緩衝大小為 1000
+    experiences = ExperienceReplay(1000)
+
+    # 儲存模型
+    saver = tf.compat.v1.train.Saver({v.name: v for v in actionDRQN.parameters}, max_to_keep = 1)
+
+    # 開始訓練過程
+    # 初始化由經驗緩衝中取樣與儲存轉移的變數
+    sample = 5
+    store = 50
+   
+    # 開始 tensorflow 階段
+    with tf.compat.v1.Session() as sess:
+        
+        # 初始化所有 tensorflow 變數
+        
+        sess.run(tf.global_variables_initializer())
+        
+        for episode in range(num_episodes):
+            
+            # 開始新世代
+            game.new_episode()
+            
+            # 在世代中進行遊戲直到世代結束
+            for frame in range(episode_length):
+                
+                # 取得遊戲狀態
+                state = game.get_state()
+                s = state.screen_buffer
+                
+                # 選擇動作
+                a = actionDRQN.prediction.eval(feed_dict = {actionDRQN.input: s})[0]
+                action = actions[a]
+                
+                # 執行動作與儲存獎勵
+                reward = game.make_action(action)
+                
+                # 更新總獎勵
+                total_reward += reward
+
+                # 如過世代結束則中斷迴圈
+                if game.is_episode_finished():
+                    break
+                 
+                # 將轉移儲存到經驗緩衝中
+                if (frame % store) == 0:
+                    experiences.appendToBuffer((s, action, reward))
+
+                # 從經驗緩衝中取樣經驗       
+                if (frame % sample) == 0:
+                    memory = experiences.sample(1)
+                    mem_frame = memory[0][0]
+                    mem_reward = memory[0][2]
+                    
+                    # 開始訓練網路
+                    Q1 = actionDRQN.output.eval(feed_dict = {actionDRQN.input: mem_frame})
+                    Q2 = targetDRQN.output.eval(feed_dict = {targetDRQN.input: mem_frame})
+
+                    # 設定學習率
+                    learning_rate = actionDRQN.learning_rate.eval()
+
+                    # 計算Q值
+                    Qtarget = old_q_value + learning_rate * (mem_reward + discount_factor * Q2 - old_q_value)    
+                    
+                    # 更新舊的Q值
+                    old_q_value = Qtarget
+
+                    # 計算損失
+                    loss = actionDRQN.loss.eval(feed_dict = {actionDRQN.target_vector: Qtarget, actionDRQN.input: mem_frame})
+                    
+                    # 更新總損失
+                    total_loss += loss
+
+                    # 更新兩個網路
+                    actionDRQN.update.run(feed_dict = {actionDRQN.target_vector: Qtarget, actionDRQN.input: mem_frame})
+                    targetDRQN.update.run(feed_dict = {targetDRQN.target_vector: Qtarget, targetDRQN.input: mem_frame})
+
+            rewards.append((episode, total_reward))
+            losses.append((episode, total_loss))
+
+            
+            print("Episode %d - Reward = %.3f, Loss = %.3f." % (episode, total_reward, total_loss))
+
+
+            total_reward = 0
+            total_loss = 0
+```
 ---
 ### 製作步驟
-1. 建立資料集dataset
-2. 移植程式到kaggle
-3. kaggle訓練模型
-4. kaggle測試模型
+1. 獎勵機制以及懲罰機制
+2. 最後輸出的成果
+3. 
+4. 
 ---
 ### 系統測試及成果展示
 
