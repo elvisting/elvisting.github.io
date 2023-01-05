@@ -31,16 +31,16 @@ tags: [jekyll, ai, reinforce_learning]
 ### Q-Learning (MC、TD)
 
 ### Epsilon-greedy Algorithm
-為了解決Q-Learning在某一個狀態(state)選擇行為(action)時，會依據前次經驗(Exploitation)找到的最佳解，只進行特定行為，而不會去嘗試其他行為，而錯失其他更好的行為，比如說我們使用的DOOM遊戲，要是一開始機器往左走時可以躲避攻擊並擊殺目標，往後機器也只會往左走，這對我們來說並不樂見，因為或許在某些時候其他的行為會是更好的，為了有更好的探索(Exploration)模式，我們引入ε-貪婪策略(Epsilon-greedy Algorithm)，使機器ε的機率下隨機選擇，在1-ε的機率下由Q-Learning決定行為，通常ε的值不會太大，且會隨時間遞減，使機器在找到最佳行為的情況下，減少隨機選擇的機會。
+為了解決Q-Learning在某一個狀態(state)選擇行為(action)時，會依據前次經驗(Exploitation)找到的最佳解，只進行特定行為，而不會去嘗試其他行為，而錯失其他更好的行為，比如說我們使用的DOOM遊戲，要是一開始機器往左走時可以躲避攻擊並擊殺目標，往後機器也只會往左走，這對我們來說並不樂見，因為或許在某些時候其他的行為會是更好的，為了有更好的探索(Exploration)模式，我們引入ε-貪婪策略(Epsilon-greedy Algorithm)，使機器ε的機率下隨機選擇，在1-ε的機率下由Q-Learning決定行為，通常ε的值不會太大，且會隨時間遞減，使機器在找到最佳行為的情況下，減少隨機選擇的機會。<br>
 $$ Action\ at\ time\ t\ a(t)\left\{
 \begin{array}{rcl}
 argmaxQ(s, a),    & with\ probability\ 1-\epsilon \\
 random, & otherwise
 \end{array}\right.
 $$
-而詳細證明可以參考網站：https://zhuanlan.zhihu.com/p/63643022 
-或是：https://stats.stackexchange.com/questions/248131/epsilon-greedy-policy-improvement 
-可以看出使用此策略可以在Q-learning上有更好的表現
+而詳細證明可以參考網站：https://zhuanlan.zhihu.com/p/63643022 <br>
+或是：(https://stats.stackexchange.com/questions/248131/epsilon-greedy-policy-improvement)<br>
+可以看出使用此策略可以在Q-learning上有更好的表現<br>
 ### Deep-Q-Learning
 
 ### DRQN
@@ -441,7 +441,7 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
 ```
 #### DDDQN演算法與程式碼：
 Deep Reinforcement learning Applied to DOOM：
-URL:https://github.com/cactuar3101/Deep-Reinforcement-Learning-applied-to-DOOM \[Fork\]
+[URL:](https://github.com/cactuar3101/Deep-Reinforcement-Learning-applied-to-DOOM) \[Fork\]
 ## **系統測試及成果展示**
 
 ---
