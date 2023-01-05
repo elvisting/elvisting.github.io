@@ -40,8 +40,8 @@ random, & otherwise
 \end{array}\right
 $$ 
 
-而詳細證明可以參考網站：https://zhuanlan.zhihu.com/p/63643022 <br>
-或是：(https://stats.stackexchange.com/questions/248131/epsilon-greedy-policy-improvement)<br>
+而詳細證明可以參考網站：<https://zhuanlan.zhihu.com/p/63643022> <br>
+或是：<https://stats.stackexchange.com/questions/248131/epsilon-greedy-policy-improvement> <br>
 可以看出使用此策略可以在Q-learning上有更好的表現<br>
 ### Deep-Q-Learning
 
@@ -442,8 +442,10 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
             total_loss = 0
 ```
 #### DDDQN演算法與程式碼：
-Deep Reinforcement learning Applied to DOOM：
-[URL:](https://github.com/cactuar3101/Deep-Reinforcement-Learning-applied-to-DOOM) \[Fork\]
+原本想使用老師提供的C51演算法，進行結果比較，但嘗試了很久都沒有成功執行，猜測因為版本太舊，vizdoom無法順利安裝，在搜尋網路過後，發現此程式碼，理論上此程式碼遠勝於我們，是一個好的模仿對象。<br>
+DDDQN全名為Double Dueling Deep Q-Learning Network，參考網址為：<br>
+[Deep Reinforcement learning Applied to DOOM](https://github.com/cactuar3101/Deep-Reinforcement-Learning-applied-to-DOOM) \[Fork\]<br>
+
 ## **系統測試及成果展示**
 
 ---
