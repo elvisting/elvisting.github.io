@@ -7,36 +7,58 @@ tags: [jekyll, ai, reinforce_learning]
 
 ---
 
-期末專題實作:運用DRQN及C15訓練遊戲之強化學習
+期末專題實作:運用DRQN及DDDQN訓練遊戲之強化學習
 
 ---
 
-## 運用DRQN及C15訓練遊戲之強化學習
+# 運用DRQN及DDDQN訓練遊戲之強化學習
 
-### 組員
+## 組員
 00953150 鄭丞恩  
 00953128 丁昱鈞  
 00953101 李承恩
-### 研究動機及目的
-# **研究動機**：
+## **研究動機及目的**
+### *研究動機：*
 起初，我們想實作老師提供的題目"四足機器狗之強化學習"，在安裝軟體(REX_GYM)的過程中遇到了些問題，因為我們使用Windows系統，所以必須額外裝微軟的開發套件，導致我們只有部分電腦安裝成功，除此之外，在實際摸索過後，我們只透過內建指令，跑出幾個訓練集，更換場景與姿勢等，但還是不太了解這個軟體如何訓練機器狗，是否需要實體機器，以及如何達成當初的構想，走出迷宮或是跑到指定定點等，為了更了解強化學習的過程，我們決定從頭研究，並藉由"用python實作強化學習：使用 TensorFlow 與 OpenAl Gym"這本書的內容幫助我們學習。
 
-# **研究目的**：
-藉由此次實作，註解範例程式碼，比較深度學習的方法，使自己深入了解強化學習的運作以及程式設計。
-### 系統簡介及功能說明
+### *研究目的：*
+藉由實作DRQN學習Doom，註解範例程式碼，並比較他人製作的DDDQN學習法，使自己深入了解強化學習的運作以及程式設計。
+## **理論與演算法**
+### 狀態價值函數
 
-# **系統簡介**：
-初步想法:  
-1.做出地圖並訓練狗狗走出ex:單一出口的封閉空間  
-2.隨機丟出物品並讓狗狗撿取並回到原位
-# **功能說明**：
+### Q-Function：狀態(state)-動作(action)價值函數
+
+### Q-Learning (MC、TD)
+
+### Epsilon-greedy Algorithm
+為了解決Q-Learning在某一個狀態(state)選擇行為(action)時，會依據前次經驗(Exploitation)找到的最佳解，只進行特定行為，而不會去嘗試其他行為，而錯失其他更好的行為，比如說我們使用的DOOM遊戲，要是一開始機器往左走時可以躲避攻擊並擊殺目標，往後機器也只會往左走，這對我們來說並不樂見，因為或許在某些時候其他的行為會是更好的，為了有更好的探索(Exploration)模式，我們引入ε-貪婪策略(Epsilon-greedy Algorithm)，使機器ε的機率下隨機選擇，在1-ε的機率下由Q-Learning決定行為，通常ε的值不會太大，且會隨時間遞減，使機器在找到最佳行為的情況下，減少隨機選擇的機會。
+$$ Action\ at\ time\ t\ a(t)\left\{
+\begin{array}{rcl}
+argmaxQ(s, a),    & with\ probability\ 1-\epsilon \\
+random, & otherwise
+\end{array}\right.
+$$
+而詳細證明可以參考網站：https://zhuanlan.zhihu.com/p/63643022 
+或是：https://stats.stackexchange.com/questions/248131/epsilon-greedy-policy-improvement 
+可以看出使用此策略可以在Q-learning上有更好的表現
+### Deep-Q-Learning
+
+### DRQN
+
+### DoubleDQN & DuelingDQN
+
+
+## **系統介紹與程式碼**
+
+由agent透過深度學習遊玩Doom，學習方法有DRQN和DDDQN，獎勵計算方式為成功擊殺怪物得到正項獎勵如果失血或損失子彈則是得到負向獎勵，期望最後的total_reward越來越高。
+
 
 ---
-### 系統方塊圖
+### *系統方塊圖*
 
 
-### 演算法模型說明 
-DRQN演算法與程式碼：
+### *演算法模型說明*
+#### DRQN演算法與程式碼：
 ```python
 class DRQN():
     def __init__(self, input_shape, num_actions, inital_learning_rate):
@@ -198,7 +220,7 @@ class DRQN():
                            self.fW, self.fb)
 ```
 定義ExperienceReplay類別來實作經驗回放緩衝，取樣經驗來訓練網路：
-```
+```python
 class ExperienceReplay():
     def __init__(self, buffer_size):
         
@@ -227,7 +249,7 @@ class ExperienceReplay():
         return memories
 ```
 定義用於訓練網路的train函式：
-```
+```python
 def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cfg", map_path = 'map02', render = False):
   
     # 計算Q值的折扣因子
@@ -417,14 +439,10 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
             total_reward = 0
             total_loss = 0
 ```
----
-### 製作步驟
-1. 獎勵機制以及懲罰機制
-2. 最後輸出的成果
-3. 
-4. 
----
-### 系統測試及成果展示
+#### DDDQN演算法與程式碼：
+Deep Reinforcement learning Applied to DOOM：
+URL:https://github.com/cactuar3101/Deep-Reinforcement-Learning-applied-to-DOOM \[Fork\]
+## **系統測試及成果展示**
 
 ---
 
