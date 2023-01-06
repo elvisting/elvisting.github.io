@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 運用DRQN及DDDQN訓練遊戲之強化學習
-authors: [<mochi>,<pancake>,<elvisting>]
+authors: [<鄭丞恩>,<李承恩>,<丁昱鈞>]
 category: [AI]
 tags: [jekyll, ai, reinforce_learning]
 math: true
@@ -74,10 +74,10 @@ $$\cal{R}^a_{ss'}=\Bbb{E}(\it{R_{t+\rm{1}}}) \mid s_t = s,s_{t+1}=s', a_t=a)$$
 動態規劃是一種用於處理複雜問題的技巧。將問題拆成比較簡單的子問題，並計算每個子問題的解決方案。如果發生同樣的子問題，將不會重新計算，直接採納既有方案，降低運算時間。<br>
 我們可以用價值迭代或是策略迭代來解Bellman Function，以下是步驟流程圖(擷取自書中)<br>
 ####
-![策略迭代](/graph/policy_itter.jpg){: w="400" h="700" .left}
+![策略迭代](/graph/policy_itter.jpg){: w="300" h="700" .left}
 _策略迭代_
 ####
-![價值迭代](/graph/policy_itter.jpg){: w="400" h="700" .right}
+![價值迭代](/graph/policy_itter.jpg){: w="300" h="700" .right}
 _價值迭代_
 
 動態學習必須在轉移機率與獎勵機率已知得前提下運作，因此當我們無法得知環境的模型時，就可以使用MC演算法;當不具備環境知識時，它非常適合用來搜尋最佳策略。
