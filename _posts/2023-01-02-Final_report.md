@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 運用DRQN及C15訓練遊戲之強化學習
+title: 運用DRQN及DDDQN訓練遊戲之強化學習
 author: [mochi_pancake_elvisting]
 category: [AI]
 tags: [jekyll, ai, reinforce_learning]
@@ -28,7 +28,7 @@ tags: [jekyll, ai, reinforce_learning]
 ---
 ### 策略函數
 根據目前狀態，決定執行的動作，說明在各狀態中應該要執行的動作，通常表示為 $ \pi(s):S->A $ 以下介紹三種策略：
-1. Stochastic Polic:$ a  \pi(a \mid s)=P(a \mid s)，s \in S$
+1. Stochastic Polic: $a\pi (a\mid s)=P(a \mid s)，s \in S$
 2. Deterministic Policy:$a = \pi(s)$(ex: greedy )
 3. Random Policy: $ a = rand(A) $ ，行為的選擇是隨機的(ex: $ \epsilon-greedy $)
 而最佳策略函數我們通常用 $\pi^* \rightarrow argmaxE(r \mid \pi)$ 表示，透過長期觀察回饋值，並進行平均計算得到。
