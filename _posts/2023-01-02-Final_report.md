@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 運用DRQN及DDDQN訓練遊戲之強化學習
-author: [mochi_pancake_elvisting]
+authors: [<mochi>,<pancake>,<elvisting>]
 category: [AI]
 tags: [jekyll, ai, reinforce_learning]
 math: true
