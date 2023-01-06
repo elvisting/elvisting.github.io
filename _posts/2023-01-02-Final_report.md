@@ -7,16 +7,17 @@ tags: [jekyll, ai, reinforce_learning]
 
 ---
 
-期末專題實作:運用DRQN及DDDQN訓練遊戲之強化學習
+# 期末專題實作:運用DRQN及DDDQN訓練遊戲之強化學習
 
 ---
-
-# 運用DRQN及DDDQN訓練遊戲之強化學習
 
 ## 組員
 00953150 鄭丞恩  
 00953128 丁昱鈞  
 00953101 李承恩
+
+---
+
 ## **研究動機及目的**
 ### *研究動機：*
 起初，我們想實作老師提供的題目"四足機器狗之強化學習"，在安裝軟體(REX_GYM)的過程中遇到了些問題，因為我們使用Windows系統，所以必須額外裝微軟的開發套件，導致我們只有部分電腦安裝成功，除此之外，在實際摸索過後，我們只透過內建指令，跑出幾個訓練集，更換場景與姿勢等，但還是不太了解這個軟體如何訓練機器狗，是否需要實體機器，以及如何達成當初的構想，走出迷宮或是跑到指定定點等，為了更了解強化學習的過程，我們決定從頭研究，並藉由"用python實作強化學習：使用 TensorFlow 與 OpenAl Gym"這本書的內容幫助我們學習。
@@ -24,6 +25,9 @@ tags: [jekyll, ai, reinforce_learning]
 ### *研究目的：*
 藉由實作DRQN學習Doom，註解範例程式碼，並比較他人製作的DDDQN學習法，使自己深入了解強化學習的運作以及程式設計。
 ## **理論與演算法**
+---
+### 策略函數
+
 ### 狀態價值函數
 
 ### Q-Function：狀態(state)-動作(action)價值函數
@@ -32,6 +36,7 @@ tags: [jekyll, ai, reinforce_learning]
 
 ### Epsilon-greedy Algorithm
 為了解決Q-Learning在某一個狀態(state)選擇行為(action)時，會依據前次經驗(Exploitation)找到的最佳解，只進行特定行為，而不會去嘗試其他行為，而錯失其他更好的行為，比如說我們使用的DOOM遊戲，要是一開始機器往左走時可以躲避攻擊並擊殺目標，往後機器也只會往左走，這對我們來說並不樂見，因為或許在某些時候其他的行為會是更好的，為了有更好的探索(Exploration)模式，我們引入ε-貪婪策略(Epsilon-greedy Algorithm)，使機器ε的機率下隨機選擇，在1-ε的機率下由Q-Learning決定行為，通常ε的值不會太大，且會隨時間遞減，使機器在找到最佳行為的情況下，減少隨機選擇的機會。<br>
+$$f(n)= \begin{cases} argmaxQ(s, a), & \text {with probability } 1-\epsilon \\\text{random,} & \text{otherwise} \end{cases} $$
 $$
 Action\ at\ time\ t\ a(t)\left \lbrace
 \begin{array}{rcl}
@@ -446,11 +451,20 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
 DDDQN全名為Double Dueling Deep Q-Learning Network，是兩個演算法的結合，參考網址為：<br>
 [Deep Reinforcement learning Applied to DOOM](https://github.com/cactuar3101/Deep-Reinforcement-Learning-applied-to-DOOM) \[Fork\]<br>
 
-## **系統測試及成果展示**
-
+## **成果、結論與未來展望**
 ---
+### *成果展示*
 
+### *結論與未來展望*
+DRQN-->DARQN
+運用其他的強化學習方式
+## **心得** 
+---
+### 李承恩
 
+### 丁昱鈞
+
+### 鄭丞恩
 
 <br>
 <br>
