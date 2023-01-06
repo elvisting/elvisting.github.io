@@ -36,15 +36,23 @@ img_path:
 而最佳策略函數我們通常用 $\pi^* \rightarrow argmaxE(r \mid \pi)$ 表示，透過長期觀察回饋值，並進行平均計算得到。
 ### 獎勵函數與折扣因子
 根據於行的動作給予獎勵 $R_t$，譬如在射擊遊戲中，成功擊殺目標給+1，損失血量或子彈則-1，決定動作的好壞，而代理會試著去最大化從環境中得到的獎勵總數(累積獎勵)，通常用 $R_t$ 表示，完整定義如下：
+
 $$R_t = r_{t+1}+r_{t+2}+r_{t+3}+ \cdots +r_T \text{，其中T表示最後一次轉移得到的回饋}$$
+
 但當T趨近於無限大，則加總也會趨近於無限大，這並不是我們想要的，因此我們加入折扣因子(discount factor)的概念，決定當前獎勵與未來將勵的重要程度，數值介於0到1之間，0表示當前獎勵比較重要，1則代表未來獎勵比較重要，通常我們會讓數值介於0.2到0.8之間避免上述情況發生，完整數學式為：
+
 $$R_t = r_{t+1}+\gamma r_{t+2}+\gamma^2 r_{t+3}+ \cdots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}，\text{where} 0 \leq \gamma \leq 1$$
+
 ### 狀態價值函數
 判別運用策略 $\pi$ 後在某個狀態中的良好程度。通常用 $V(s)$ 來表示，意思是遵循某個策略後的狀態值。
 定義為：
+
 $$V^\pi(s)=\Bbb{E}_\pi \left[R_t \mid s_t=s \right]$$
+
 帶入$R_t$則變成：
+
 $$V^\pi(s)=\Bbb{E}_\pi \left[\sum_{k=0}^\infty \gamma^k r_{t+k+1} \mid s_t=s \right]$$
+
 ### Q-Function：動作(action)價值函數
 
 指明代理運用策略 $\pi$ 後，在狀態中執行某個動作的良好程度，Q函數定義為：
@@ -56,16 +64,19 @@ $$Q^\pi(s,a)=\Bbb{E}_\pi \left[\sum_{k=0}^\infty \gamma^k r_{t+k+1} \mid s_t=s \
 
 ### Bellman Function--Dynamic programming & Monte Carlo & Temporal-Difference
 定義完價值函數，我們已經可以找到狀態與動作的價值，現在要來做最佳化，也就是找到最佳策略，我們可以將狀態價值函數與動作價值函數稍加整理與推導，詳細過程可以參考[The Bellman Equation-V-function and Q-function Explained](https://towardsdatascience.com/the-bellman-equation-59258a0d3fa7)，下方列出狀態價值函數與動作價值函數推導後結果：
-$$
-V^\pi(s)=\sum_{a}\pi(s,a)\sum_{s'}\cal{P}^a_{ss'}\left[R^a_{ss'}+\gamma \it{V}^\pi(s')\right]
-$$
-$$
-Q^\pi(s,a)=\sum_{s'}\cal{P}^a_{ss'}\left[R^a_{ss'}+\gamma\sum_{a'} \it{Q}^\pi(s',a')\right]
-$$
+
+$$V^\pi(s)=\sum_{a}\pi(s,a)\sum_{s'}\cal{P}^a_{ss'}\left[R^a_{ss'}+\gamma \it{V}^\pi(s')\right]$$
+
+$$Q^\pi(s,a)=\sum_{s'}\cal{P}^a_{ss'}\left[R^a_{ss'}+\gamma\sum_{a'} \it{Q}^\pi(s',a')\right]$$
+
 其中$\cal{P}^a_{ss'}$為執行動作$a$從狀態$s$移動到$s'$的轉移機率：
+
 $$\cal{P}^a_{ss'}=pr(s_{t+1}=s' \mid s_t{} = s, a_t=a)$$
+
 $\cal{R}^a_{ss'}$為執行動作$a$從狀態$s$移動到$s'$，收到的獎勵機率：
+
 $$\cal{R}^a_{ss'}=\Bbb{E}(\it{R_{t+\rm{1}}}) \mid s_t = s,s_{t+1}=s', a_t=a)$$
+
 由於直接求法過於複雜，因此可以使用下列三種方法來求最佳策略。
 * 動態規劃(Dynamic programming，DP)
 * 蒙地卡羅(Monte Carlo，MC)
@@ -73,7 +84,7 @@ $$\cal{R}^a_{ss'}=\Bbb{E}(\it{R_{t+\rm{1}}}) \mid s_t = s,s_{t+1}=s', a_t=a)$$
 
 動態規劃是一種用於處理複雜問題的技巧。將問題拆成比較簡單的子問題，並計算每個子問題的解決方案。如果發生同樣的子問題，將不會重新計算，直接採納既有方案，降低運算時間。<br>
 我們可以用價值迭代或是策略迭代來解Bellman Function，以下是步驟流程圖(擷取自書中)<br>
-####
+
 ![策略迭代](/graph/policy_itter.jpg){: w="350" h="700" .left}_策略迭代_![價值迭代](/graph/policy_itter.jpg){: w="350" h="700" .right}_價值迭代_
 
 動態學習必須在轉移機率與獎勵機率已知得前提下運作，因此當我們無法得知環境的模型時，就可以使用MC演算法;當不具備環境知識時，它非常適合用來搜尋最佳策略。
