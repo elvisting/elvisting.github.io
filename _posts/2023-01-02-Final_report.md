@@ -31,12 +31,36 @@ tags: [jekyll, ai, reinforce_learning]
 1. Stochastic Polic:$ a  \pi(a \mid s)=P(a \mid s)，s \in S$
 2. Deterministic Policy:$a = \pi(s)$(ex: greedy )
 3. Random Policy: $ a = rand(A) $ ，行為的選擇是隨機的(ex: $ \epsilon-greedy $)
-而最佳策略函數我們通常用 $\pi^* \rightarrow \text{argmax}E(r \mid \pi)$ 表示，透過長期觀察回饋值，並進行平均計算得到。
+而最佳策略函數我們通常用 $\pi^* \rightarrow argmaxE(r \mid \pi)$ 表示，透過長期觀察回饋值，並進行平均計算得到。
+### 獎勵函數與折扣因子
+根據於行的動作給予獎勵 $R_t$，譬如在射擊遊戲中，成功擊殺目標給+1，損失血量或子彈則-1，決定動作的好壞，而代理會試著去最大化從環境中得到的獎勵總數(累積獎勵)，通常用 $G_t$ 表示，完整定義如下：
+$$
+G_t = R_{t+1}+R_{t+2}+R_{t+3}+ \cdots +R_T \text{，其中T表示最後一次轉移得到的回饋}
+$$
+但當T趨近於無限大，則加總也會趨近於無限大，這並不是我們想要的，因此我們加入折扣因子(discount factor)的概念，決定當前獎勵與未來將勵的重要程度，數值介於0到1之間，0表示當前獎勵比較重要，1則代表未來獎勵比較重要，通常我們會讓數值介於0.2到0.8之間避免上述情況發生，完整數學式為：
+$$
+G_t = R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}+ \cdots = \sum_{k=0}^\infty \gamma^k R_{t+k+1}，\text{where} 0 \leq \gamma \leq 1  
+$$
 ### 狀態價值函數
-
-### Q-Function：狀態(state)-動作(action)價值函數
-
-### Q-Learning (MC、TD)
+判別運用策略 $\pi$ 後在某個狀態中的良好程度。通常用 $V(s)$ 來表示，意思是遵循某個策略後的狀態值。
+定義為：
+$$
+V_\pi(s)=\Bbb{E}_\pi \left[G_t \mid s_t=s \right]
+$$
+帶入$G_t$則變成
+$$
+V_\pi(s)=\Bbb{E}_\pi \left[\sum_{k=0}^\infty \gamma^k R_{t+k+1} \mid s_t=s \right]
+$$
+### Q-Function：動作(action)價值函數
+指明代理運用策略 $\pi$ 後，在狀態中執行某個動作的良好程度，Q函數定義為：
+$$
+Q_\pi(s,a)=\Bbb{E}_\pi \left[G_t \mid s_t=s, a_t = a \right]
+$$
+帶入$G_t$則變成
+$$
+Q_\pi(s,a)=\Bbb{E}_\pi \left\[sum_{k=0}^\infty \gamma^k R_{t+k+1} \mid s_t=s \right]
+$$
+### Dynamic programming(Bellman function) & Monte Carlo & Temporal-Difference
 
 ### Epsilon-greedy Algorithm
 為了解決Q-Learning在某一個狀態(state)選擇行為(action)時，會依據前次經驗(Exploitation)找到的最佳解，只進行特定行為，而不會去嘗試其他行為，而錯失其他更好的行為，比如說我們使用的DOOM遊戲，要是一開始機器往左走時可以躲避攻擊並擊殺目標，往後機器也只會往左走，這對我們來說並不樂見，因為或許在某些時候其他的行為會是更好的，為了有更好的探索(Exploration)模式，我們引入ε-貪婪策略(Epsilon-greedy Algorithm)，使機器ε的機率下隨機選擇，在1-ε的機率下由Q-Learning決定行為，通常ε的值不會太大，且會隨時間遞減，使機器在找到最佳行為的情況下，減少隨機選擇的機會。<br>
