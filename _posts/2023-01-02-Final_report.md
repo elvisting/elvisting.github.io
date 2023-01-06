@@ -28,50 +28,57 @@ tags: [jekyll, ai, reinforce_learning]
 ---
 ### 策略函數
 根據目前狀態，決定執行的動作，說明在各狀態中應該要執行的動作，通常表示為 $ \pi(s):S->A $ 以下介紹三種策略：
-1. Stochastic Polic: $a\pi (a\mid s)=P(a \mid s)，s \in S$
-2. Deterministic Policy:$a = \pi(s)$(ex: greedy )
-3. Random Policy: $ a = rand(A) $ ，行為的選擇是隨機的(ex: $ \epsilon-greedy $)
+1. Stochastic Polic: $a \sim \pi (a\mid s)=P(a \mid s)，s \in S$
+2. Deterministic Policy: $a = \pi(s)$(ex: greedy )
+3. Random Policy: $a = rand(A)$ ，行為的選擇是隨機的(ex: $\epsilon-greedy$ )
+
 而最佳策略函數我們通常用 $\pi^* \rightarrow argmaxE(r \mid \pi)$ 表示，透過長期觀察回饋值，並進行平均計算得到。
 ### 獎勵函數與折扣因子
-根據於行的動作給予獎勵 $R_t$，譬如在射擊遊戲中，成功擊殺目標給+1，損失血量或子彈則-1，決定動作的好壞，而代理會試著去最大化從環境中得到的獎勵總數(累積獎勵)，通常用 $G_t$ 表示，完整定義如下：
-$$
-G_t = R_{t+1}+R_{t+2}+R_{t+3}+ \cdots +R_T \text{，其中T表示最後一次轉移得到的回饋}
-$$
+根據於行的動作給予獎勵 $R_t$，譬如在射擊遊戲中，成功擊殺目標給+1，損失血量或子彈則-1，決定動作的好壞，而代理會試著去最大化從環境中得到的獎勵總數(累積獎勵)，通常用 $R_t$ 表示，完整定義如下：
+$$R_t = r_{t+1}+r_{t+2}+r_{t+3}+ \cdots +r_T \text{，其中T表示最後一次轉移得到的回饋}$$
 但當T趨近於無限大，則加總也會趨近於無限大，這並不是我們想要的，因此我們加入折扣因子(discount factor)的概念，決定當前獎勵與未來將勵的重要程度，數值介於0到1之間，0表示當前獎勵比較重要，1則代表未來獎勵比較重要，通常我們會讓數值介於0.2到0.8之間避免上述情況發生，完整數學式為：
-$$
-G_t = R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}+ \cdots = \sum_{k=0}^\infty \gamma^k R_{t+k+1}，\text{where} 0 \leq \gamma \leq 1  
-$$
+$$R_t = r_{t+1}+\gamma r_{t+2}+\gamma^2 r_{t+3}+ \cdots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}，\text{where} 0 \leq \gamma \leq 1$$
 ### 狀態價值函數
 判別運用策略 $\pi$ 後在某個狀態中的良好程度。通常用 $V(s)$ 來表示，意思是遵循某個策略後的狀態值。
 定義為：
-$$
-V_\pi(s)=\Bbb{E}_\pi \left[G_t \mid s_t=s \right]
-$$
-帶入$G_t$則變成
-$$
-V_\pi(s)=\Bbb{E}_\pi \left[\sum_{k=0}^\infty \gamma^k R_{t+k+1} \mid s_t=s \right]
-$$
+$$V^\pi(s)=\Bbb{E}_\pi \left[R_t \mid s_t=s \right]$$
+帶入$R_t$則變成：
+$$V^\pi(s)=\Bbb{E}_\pi \left[\sum_{k=0}^\infty \gamma^k r_{t+k+1} \mid s_t=s \right]$$
 ### Q-Function：動作(action)價值函數
-指明代理運用策略 $\pi$ 後，在狀態中執行某個動作的良好程度，Q函數定義為：
-$$
-Q_\pi(s,a)=\Bbb{E}_\pi \left[G_t \mid s_t=s, a_t = a \right]
-$$
-帶入$G_t$則變成
-$$
-Q_\pi(s,a)=\Bbb{E}_\pi \left\[sum_{k=0}^\infty \gamma^k R_{t+k+1} \mid s_t=s \right]
-$$
-### Dynamic programming(Bellman function) & Monte Carlo & Temporal-Difference
 
+指明代理運用策略 $\pi$ 後，在狀態中執行某個動作的良好程度，Q函數定義為：
+
+$$Q^\pi(s,a)=\Bbb{E}_\pi \left[R_t \mid s_t=s, a_t = a \right]$$
+帶入$R_t$則變成：
+
+$$Q^\pi(s,a)=\Bbb{E}_\pi \left[\sum_{k=0}^\infty \gamma^k r_{t+k+1} \mid s_t=s \right]$$
+
+### Bellman Function--Dynamic programming & Monte Carlo & Temporal-Difference
+定義完價值函數，我們已經可以找到狀態與動作的價值，現在要來做最佳化，也就是找到最佳策略，我們可以將狀態價值函數與動作價值函數稍加整理與推導，詳細過程可以參考[The Bellman Equation-V-function and Q-function Explained](https://towardsdatascience.com/the-bellman-equation-59258a0d3fa7)，下方列出狀態價值函數與動作價值函數推導後結果：
+$$
+V^\pi(s)=\sum_{a}\pi(s,a)\sum_{s'}\cal{P}^a_{ss'}\left[R^a_{ss'}+\gamma \it{V}^\pi(s')\right]
+$$
+$$
+Q^\pi(s,a)=\sum_{s'}\cal{P}^a_{ss'}\left[R^a_{ss'}+\gamma\sum_{a'} \it{Q}^\pi(s',a')\right]
+$$
+其中$\cal{P}^a_{ss'}$為執行動作$a$從狀態$s$移動到$s'$的轉移機率：
+$$\cal{P}^a_{ss'}=pr(s_{t+1}=s' \mid s_t{} = s, a_t=a)$$
+$\cal{R}^a_{ss'}$為執行動作$a$從狀態$s$移動到$s'$，收到的獎勵機率：
+$$\cal{R}^a_{ss'}=\Bbb{E}(\it{R_{t+\rm{1}}}) \mid s_t = s,s_{t+1}=s', a_t=a)$$
+由於直接求法過於複雜，因此可以使用下列三種方法來求最佳策略。
+* 動態規劃(Dynamic programming，DP)
+* 蒙地卡羅(Monte Carlo，MC)
+* 時序差分(Temporal-Difference，TD)
+
+動態規劃是一種用於處理複雜問題的技巧。將問題拆成比較簡單的子問題，並計算每個子問題的解決方案。如果發生同樣的子問題，將不會重新計算，直接採納既有方案，降低運算時間。<br>
+我們可以用價值迭代或是策略迭代來解Bellman Function，以下是步驟流程圖(擷取自書中)<br>
+<img  src=/graph/policy_itter.jpg  title="策略迭代" width="50%">
+<img  src=/graph/value_itter.jpg  title="價值迭代" width="50%"><br>
+與動態學習不同的是Monte Carlo 
 ### Epsilon-greedy Algorithm
 為了解決Q-Learning在某一個狀態(state)選擇行為(action)時，會依據前次經驗(Exploitation)找到的最佳解，只進行特定行為，而不會去嘗試其他行為，而錯失其他更好的行為，比如說我們使用的DOOM遊戲，要是一開始機器往左走時可以躲避攻擊並擊殺目標，往後機器也只會往左走，這對我們來說並不樂見，因為或許在某些時候其他的行為會是更好的，為了有更好的探索(Exploration)模式，我們引入ε-貪婪策略(Epsilon-greedy Algorithm)，使機器ε的機率下隨機選擇，在1-ε的機率下由Q-Learning決定行為，通常ε的值不會太大，且會隨時間遞減，使機器在找到最佳行為的情況下，減少隨機選擇的機會。<br>
-$$f(n)= \begin{cases} argmaxQ(s, a), & \text {with probability } 1-\epsilon \\\text{random,} & \text{otherwise} \end{cases} $$
-$$
-Action\ at\ time\ t\ a(t)\left \lbrace
-\begin{array}{rcl}
-argmaxQ(s, a),    & with\ probability\ 1-\epsilon \\
-random, & otherwise
-\end{array}\right
-$$ 
+$$Action\ at\ time\ t\ a(t)= \begin{cases} argmaxQ(s, a), & \text {with probability } 1-\epsilon \\\text{random,} & \text{otherwise} \end{cases}$$
+
 
 而詳細證明可以參考網站：<https://zhuanlan.zhihu.com/p/63643022> <br>
 或是：<https://stats.stackexchange.com/questions/248131/epsilon-greedy-policy-improvement> <br>
@@ -94,11 +101,30 @@ $$
 
 ### *演算法模型說明*
 #### DRQN演算法與程式碼：
+引入所需的函式庫：
+```python
+import tensorflow as tf
+import numpy as np
+import math
+import vizdoom as viz
+from tensorboardX import SummaryWriter
+```
+定義 get_input_shape 函式來計算輸入影像經過卷積層處理後的最後外形：
+```python
+def get_input_shape(Image,Filter,Stride):
+    layer1 = math.ceil(((Image - Filter + 1) / Stride))
+    o1 = math.ceil((layer1 / Stride))
+    layer2 = math.ceil(((o1 - Filter + 1) / Stride))
+    o2 = math.ceil((layer2 / Stride))
+    layer3 = math.ceil(((o2 - Filter + 1) / Stride))
+    o3 = math.ceil((layer3  / Stride))
+    return int(o3)
+```
+DRQN演算法：
 ```python
 class DRQN():
     def __init__(self, input_shape, num_actions, inital_learning_rate):
         # 初始化所有超參數
-
         self.tfcast_type = tf.float32
         
         # 設定輸入外形為(length, width, channels)
@@ -158,7 +184,6 @@ class DRQN():
         self.features2 = tf.Variable(initial_value = np.random.rand(self.filter_size, self.filter_size, self.num_filters[0], self.num_filters[1]),
                                      dtype = self.tfcast_type)
                                      
-        
         self.features3 = tf.Variable(initial_value = np.random.rand(self.filter_size, self.filter_size, self.num_filters[1], self.num_filters[2]),
                                      dtype = self.tfcast_type)
         # 初始化RNN變數
@@ -267,7 +292,6 @@ class ExperienceReplay():
         
     # 如果緩衝滿了就移除舊的轉移
     # 可把緩衝視佇列，新的進來時，舊的就出去
-    
     def appendToBuffer(self, memory_tuplet):
         if len(self.buffer) > self.buffer_size: 
             for i in range(len(self.buffer) - self.buffer_size):
@@ -275,7 +299,6 @@ class ExperienceReplay():
         self.buffer.append(memory_tuplet)  
         
     # 定義 sample 函式來隨機取樣n個轉移  
-    
     def sample(self, n):
         memories = []
         for i in range(n):
@@ -322,7 +345,7 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
     game.set_screen_format(viz.ScreenFormat.RGB24)
 
     # 設定以下參數為 true or false 來加入粒子與效果
-    game.set_render_hud(False)
+    game.set_render_hud(True)
     game.set_render_minimal_hud(False)
     game.set_render_crosshair(False)
     game.set_render_weapon(True)
@@ -333,13 +356,13 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
     game.set_render_corpses(False)
     game.set_render_screen_flashes(True)
 
-    # 指定代理可用的按鈕
+    # 指定代理可用的按鈕，動作選擇向左、向右以及射擊
+    # game.add_available_button(viz.Button.TURN_LEFT)
+    # game.add_available_button(viz.Button.TURN_RIGHT)
+    # game.add_available_button(viz.Button.MOVE_FORWARD)
+    # game.add_available_button(viz.Button.MOVE_BACKWARD)
     game.add_available_button(viz.Button.MOVE_LEFT)
     game.add_available_button(viz.Button.MOVE_RIGHT)
-    game.add_available_button(viz.Button.TURN_LEFT)
-    game.add_available_button(viz.Button.TURN_RIGHT)
-    game.add_available_button(viz.Button.MOVE_FORWARD)
-    game.add_available_button(viz.Button.MOVE_BACKWARD)
     game.add_available_button(viz.Button.ATTACK)
     
     # 加入一個名為 delta 的按鈕
@@ -357,23 +380,22 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
         count += 1
     actions = actions.astype(int).tolist()
 
-    # 遊戲變數，裝甲、生命值與殺敵數
+    # 遊戲變數，彈藥、生命值與殺敵數
     game.add_available_game_variable(viz.GameVariable.AMMO0)
     game.add_available_game_variable(viz.GameVariable.HEALTH)
     game.add_available_game_variable(viz.GameVariable.KILLCOUNT)
 
     # 設定 episode_timeout 在數個時間步驟後停止該世代
     # 另外設定 episode_start_time，有助於跳過初始事件
-    
     game.set_episode_timeout(6 * episode_length)
-    game.set_episode_start_time(10)
+    game.set_episode_start_time(14)
     game.set_window_visible(render)
     
     # 設定 set_sound_enable 啟動或關閉音效
     game.set_sound_enabled(False)
 
-    # 設定生存獎勵為0，即使動作沒有實際作用，代理還是可以每走一步就收到獎勵
-    game.set_living_reward(0)
+    # 設定生存獎勵為-1，動作假如無實際作用，則利用扣分迫使代理轉換動作
+    game.set_living_reward(-1)
 
     # doom 有多種模式，像是 玩家(player), 旁觀者(spectator), 非同步玩家(asynchronous player) and 非同步旁觀者(asynchronous spectator)
     # 在旁觀者模式，人類來玩遊戲，代理從中學習
@@ -395,14 +417,20 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
 
     # 開始訓練過程
     # 初始化由經驗緩衝中取樣與儲存轉移的變數
-    sample = 5
+    sample = 4
     store = 50
+
+    # 設定 tensorboadX 與 想要觀察的變數 
+    writer = SummaryWriter(log_dir = 'runs/' + scenario)
+    kill_count = np.zeros(10) # This list will contain kill counts of each 10 episodes in order to compute moving average
+    ammo = np.zeros(10) # This list will contain ammo of each 10 episodes in order to compute moving average
+    rewards2 = np.zeros(10)
+    losses2 = np.zeros(10)
    
     # 開始 tensorflow 階段
     with tf.compat.v1.Session() as sess:
         
         # 初始化所有 tensorflow 變數
-        
         sess.run(tf.global_variables_initializer())
         
         for episode in range(num_episodes):
@@ -429,6 +457,18 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
 
                 # 如過世代結束則中斷迴圈
                 if game.is_episode_finished():
+                    
+                    # tensordroad紀錄輸出
+                    kill_count[episode%10] = game.get_game_variable(viz.GameVariable.KILLCOUNT)
+                    ammo[episode%10] = game.get_game_variable(viz.GameVariable.AMMO2)
+                    rewards2[episode%10] = total_reward
+                    losses2[episode%10] = total_loss
+                    # 更新 tensordroad writer
+                    if (episode > 0) and (episode%10 == 0):
+                        writer.add_scalar('Game variables/Kills', kill_count.mean(), episode)
+                        writer.add_scalar('Game variables/Ammo', ammo.mean(), episode)
+                        writer.add_scalar('Reward Loss/Reward', rewards2.mean(), episode)
+                        writer.add_scalar('Reward Loss/loss', losses2.mean(), episode)
                     break
                  
                 # 將轉移儲存到經驗緩衝中
@@ -473,6 +513,10 @@ def train(num_episodes, episode_length, learning_rate, scenario = "deathmatch.cf
 
             total_reward = 0
             total_loss = 0
+            
+            # tensorbroad 存取輸出並結束
+            writer.export_scalars_to_json("./all_scalars.json")
+            writer.close()
 ```
 #### DDDQN演算法與程式碼：
 原本想使用老師提供的C51演算法，進行結果比較，但嘗試了很久都沒有成功執行，猜測因為版本太舊，vizdoom無法順利安裝，在搜尋網路過後，發現此程式碼，理論上此程式碼遠勝於我們，是一個好的模仿對象。<br>
