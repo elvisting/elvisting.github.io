@@ -74,7 +74,18 @@ $$\cal{R}^a_{ss'}=\Bbb{E}(\it{R_{t+\rm{1}}}) \mid s_t = s,s_{t+1}=s', a_t=a)$$
 我們可以用價值迭代或是策略迭代來解Bellman Function，以下是步驟流程圖(擷取自書中)<br>
 <img  src=/graph/policy_itter.jpg  title="策略迭代" width="50%">
 <img  src=/graph/value_itter.jpg  title="價值迭代" width="50%"><br>
-與動態學習不同的是Monte Carlo 
+動態學習必須在轉移機率與獎勵機率已知得前提下運作，因此當我們無法得知環境的模型時，就可以使用MC演算法;當不具備環境知識時，它非常適合用來搜尋最佳策略。
+MC透過隨機取樣來找到約略的方案，每個狀態對應各自的獎勵(i.e$V^\pi(s_a)\leftrightarrow R_a$)，並透過執行多條路徑的方法來估計某格結果的機率，基於大數法則的實證方法，當實驗的次數越多，它的平均值也就會越趨近於理論值。我們只需要各狀態、動作與獎勵的取樣順序即可進行，它只適用於世代型(episode)的任務，不需要任何模型，因此也稱為無模型學習法。
+缺點就是要花費大量時間(玩到遊戲結束)，因為每次的結果都不一樣(變異數很大)，此外如果將品質不佳的參數和限制輸入到模型中，則會影響輸出結果。
+
+最後要介紹時序差分(TD)它結合了兩者的優點。如同MC，TD學習無須用到模型動態就能運作 ; 它也像DP一樣，不必等到每次世代結束才能估計價值函數。反之，它會根據上次所學的估計值來推測當下的估計值，又稱為自助抽樣法(bootstrapping)。
+在MC中，我們運用平均值來估計價值函數，而在TD學習，我們使用當前狀態來更新先前狀態的值，數學式如下：
+$$
+V^\pi(s_{t-1})=V(s_{t-1})+\alpha(r+\gamma V(s_t)-V(s_{t-1}))
+$$
+*前一個狀態的價值 = 前一個狀態的價值 + 學習率 ( 獎勵 + 折扣因子
+( 當下狀態價值 ) - 前一個狀態的價值 )*
+換句話說就是實際獎勵($r+\gamma V(s_t)$)與期望獎勵($V(s_{t-1})$)之差乘以學習率$\alpha$
 ### Epsilon-greedy Algorithm
 為了解決Q-Learning在某一個狀態(state)選擇行為(action)時，會依據前次經驗(Exploitation)找到的最佳解，只進行特定行為，而不會去嘗試其他行為，而錯失其他更好的行為，比如說我們使用的DOOM遊戲，要是一開始機器往左走時可以躲避攻擊並擊殺目標，往後機器也只會往左走，這對我們來說並不樂見，因為或許在某些時候其他的行為會是更好的，為了有更好的探索(Exploration)模式，我們引入ε-貪婪策略(Epsilon-greedy Algorithm)，使機器ε的機率下隨機選擇，在1-ε的機率下由Q-Learning決定行為，通常ε的值不會太大，且會隨時間遞減，使機器在找到最佳行為的情況下，減少隨機選擇的機會。<br>
 $$Action\ at\ time\ t\ a(t)= \begin{cases} argmaxQ(s, a), & \text {with probability } 1-\epsilon \\\text{random,} & \text{otherwise} \end{cases}$$
@@ -83,6 +94,8 @@ $$Action\ at\ time\ t\ a(t)= \begin{cases} argmaxQ(s, a), & \text {with probabil
 而詳細證明可以參考網站：<https://zhuanlan.zhihu.com/p/63643022> <br>
 或是：<https://stats.stackexchange.com/questions/248131/epsilon-greedy-policy-improvement> <br>
 可以看出使用此策略可以在Q-learning上有更好的表現<br>
+### Q-learning
+
 ### Deep-Q-Learning
 
 ### DRQN
