@@ -4,7 +4,7 @@ title: 運用DRQN及DDDQN訓練遊戲之強化學習
 author: [mochi_pancake_elvisting]
 category: [AI]
 tags: [jekyll, ai, reinforce_learning]
-
+math: true
 ---
 
 # 期末專題實作:運用DRQN及DDDQN訓練遊戲之強化學習
