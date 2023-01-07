@@ -6,6 +6,7 @@ category: [AI]
 tags: [jekyll, ai, reinforce_learning]
 math: true
 img_path: 
+
 ---
 
 # 期末專題實作:運用DRQN及DDDQN訓練遊戲之強化學習
