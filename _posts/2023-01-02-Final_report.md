@@ -87,9 +87,9 @@ $$\cal{R}^a_{ss'}=\Bbb{E}(\it{R_{t+\rm{1}}}) \mid s_t = s,s_{t+1}=s', a_t=a)$$
 * 時序差分(Temporal-Difference，TD)
 
 動態規劃是一種用於處理複雜問題的技巧。將問題拆成比較簡單的子問題，並計算每個子問題的解決方案。如果發生同樣的子問題，將不會重新計算，直接採納既有方案，降低運算時間。<br>
-我們可以用價值迭代或是策略迭代來解Bellman Function，以下是步驟流程圖(擷取自書中)<br>
+我們可以用價值迭代或是策略迭代來解Bellman Function，以下是步驟流程圖(擷取自書中)。<br>
 
-![策略迭代](/graph/policy_itter.jpg){: w="350" h="700" .left}![價值迭代](/graph/policy_itter.jpg){: w="350" h="700" .left}_策略迭代(左)價值迭代(右)_
+![策略迭代](/graph/policy_itter.jpg){: w="350" h="700" .left}![價值迭代](/graph/value_itter.jpg){: w="350" h="700" .left}_策略迭代(左)價值迭代(右)_
 
 動態學習必須在轉移機率與獎勵機率已知得前提下運作，因此當我們無法得知環境的模型時，就可以使用MC演算法;當不具備環境知識時，它非常適合用來搜尋最佳策略。
 MC透過隨機取樣來找到約略的方案，每個狀態對應各自的獎勵(i.e$V^\pi(s_a)\leftrightarrow R_a$)，並透過執行多條路徑的方法來估計某格結果的機率，基於大數法則的實證方法，當實驗的次數越多，它的平均值也就會越趨近於理論值。我們只需要各狀態、動作與獎勵的取樣順序即可進行，它只適用於世代型(episode)的任務，不需要任何模型，因此也稱為無模型學習法。
@@ -105,7 +105,7 @@ $$
 *前一個狀態的價值 = 前一個狀態的價值 + 學習率 ( 獎勵 + 折扣因子
 ( 當下狀態價值 ) - 前一個狀態的價值 )*
 
-換句話說就是實際獎勵($r_{t+1}+\gamma V(s_t)$)與期望獎勵($V(s_{t-1})$)之差乘以學習率$\alpha$
+換句話說就是實際獎勵($r_{t+1}+\gamma V(s_t)$)與期望獎勵($V(s_{t-1})$)之差乘以學習率$\alpha$。
 
 ### *Epsilon-greedy Algorithm*
 為了解決Q-Learning在某一個狀態(state)選擇行為(action)時，會依據前次經驗(Exploitation)找到的最佳解，只進行特定行為，而不會去嘗試其他行為，而錯失其他更好的行為，比如說我們使用的DOOM遊戲，要是一開始機器往左走時可以躲避攻擊並擊殺目標，往後機器也只會往左走，這對我們來說並不樂見，因為或許在某些時候其他的行為會是更好的，為了有更好的探索(Exploration)模式，我們引入$\epsilon$-貪婪策略(Epsilon-greedy Algorithm)，使機器$\epsilon$的機率下隨機選擇，在1-$\epsilon$的機率下由Q-Learning決定行為，通常$\epsilon$的值不會太大，且會隨時間遞減，使機器在找到最佳行為的情況下，減少隨機選擇的機會。<br>
@@ -114,7 +114,7 @@ $$Action\ at\ time\ t\ a(t)= \begin{cases} argmaxQ(s, a), & \text {with probabil
 
 而詳細證明可以參考網站：<https://zhuanlan.zhihu.com/p/63643022> <br>
 或是：<https://stats.stackexchange.com/questions/248131/epsilon-greedy-policy-improvement> <br>
-可以看出使用此策略可以在Q-learning上有更好的表現<br>
+可以看出使用此策略可以在Q-learning上有更好的表現。<br>
 ### *Q-learning*
 在課堂上已經介紹過Q-Learning，這裡將在稍加介紹，TD-Learning可以分為兩大類，On-policy與Off-poicy，前者會從資料當中學習到同一種策略($\pi$)，再進行改進(ex:[Sarsa](https://en.wikipedia.org/wiki/State%E2%80%93action%E2%80%93reward%E2%80%93state%E2%80%93action))，Off-poicy沒有固定策略，會利用學習到的經驗根據當前狀態推斷出動作的價值，也就是其學習到的策略是獨立於訓練資料(ex:[Q-Learnig](https://en.wikipedia.org/wiki/Q-learning))，這裡我們只介紹Q-Learning，在Q學習，我們關注的是Q-Function，也就是在狀態s中執行a所產生的效果，我們會根據以下方程式更新Q-value：
 
@@ -147,7 +147,7 @@ Frame&Words discription：
 #### Environment
 
 會將environment環境每一個時間點的observation(觀察)的集合當作環境的State(狀態)
-從環境的State(狀態)跟reward(獎勵)再去選擇一個最好的action(動作)，稱為policy(策略)
+從環境的State(狀態)跟reward(獎勵)再去選擇一個最好的action(動作)，稱為policy(策略)。
 
 #### Replay Memory
 
@@ -157,7 +157,7 @@ Frame&Words discription：
 
 #### Q網路
 
-經過一些時間後，把訓練用的參數給復製到計算Target Q的網路，用此手法把計算Target Q的神經網路跟訓練用的神經網路分開，
+經過一些時間後，把訓練用的參數給復製到計算Target Q的網路，用此手法把計算Target Q的神經網路跟訓練用的神經網路分開。
 
 
 ### *DRQN*
