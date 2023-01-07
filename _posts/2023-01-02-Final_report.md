@@ -182,7 +182,7 @@ LSTM層會保留關於前一個遊戲狀態的重要資訊，並根據我們的�
 
 DoubleDQN的原始演算法為：[Double Q-learning” (Hasselt, 2010)](https://arxiv.org/pdf/1509.06461.pdf)
 
-![DoubleQ-learning](/graph/DRQN_frame.png){: w="350" h="700" .center}_DoubleQ-learning_
+![DoubleQ-learning](/graph/DoubleQ-learning.png){: w="350" h="700" .center}_DoubleQ-learning_
 
 進階版的DoubleDQN：[Deep Reinforcement Learning with Double Q-learning” (Hasselt et al., 2015)](https://arxiv.org/pdf/1509.06461.pdf)
 
