@@ -144,11 +144,11 @@ $$
 ### *系統方塊圖*
 **TRAIN**
 
-![Train](\graph\train_flow.png.jpg){: w="350" h="700" .center}
+![Train](\graph\train_flow.png){: w="350" h="700" .center}
 
 **DRQN**
 
-![DRQN](\graph\DRQN_flow.png.jpg){: w="350" h="700" .center}
+![DRQN](\graph\DRQN_flow.png){: w="350" h="700" .center}
 
 ### *演算法模型說明*
 #### DRQN演算法與程式碼
