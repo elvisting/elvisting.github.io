@@ -123,7 +123,7 @@ $$
 ( 最優未來價值的估計 ) - 舊的Q  )*
 
 其詳細步驟為：
-![Q-Learning](\graph\q_learning.jpg){: w="350" h="700" .center}_Q-Learning 流程圖_
+![Q-Learning](/graph/q_learning.jpg){: w="350" h="700" .center}_Q-Learning 流程圖_
 
 ### Deep-Q-Learning
 
@@ -144,11 +144,11 @@ $$
 ### *系統方塊圖*
 **TRAIN**
 
-![Train](\graph\train_flow.png){: w="350" h="700" .center}
+![Train](/graph/train_flow.png){: w="350" h="700" .center}
 
 **DRQN**
 
-![DRQN](\graph\DRQN_flow.png){: w="350" h="700" .center}
+![DRQN](/graph/DRQN_flow.png){: w="350" h="700" .center}
 
 ### *演算法模型說明*
 #### DRQN演算法與程式碼
