@@ -7,7 +7,6 @@ tags: [jekyll, ai, reinforce_learning]
 math: true
 img_path: 
 ---
-<font face="標楷體">
 
 # 期末專題實作:運用DRQN及DDDQN訓練遊戲之強化學習
 
@@ -589,8 +588,6 @@ DRQN-->DARQN
 
 ### 鄭丞恩
 
-
-</font>
 <br>
 <br>
 
