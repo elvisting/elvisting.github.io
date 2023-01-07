@@ -142,7 +142,7 @@ Frame&Words discription：
 
 ![DQN_algorithm_word](/graph/DQN_algorithm_word.png){: w="350" h="700" .left}![DQN_algorithm](/graph/DQN_algorithm.png){: w="350" h="700" .left}_DQN_algorithm_words(left)&DQN_algorithm(right)_
 
-左邊紅色線為初始狀態的第一步，將 St, at, rt, S(t+1)給算出來並存放至記憶體裡面，第一步初始化做完之後，再進行藍色線的flow，通過環境來儲存St, at, rt, S(t+1)，並將參數丟給對應的網路來計算LOSS Function，最後再更新網路的參數，一直不斷的重覆更新就可以找出最好的Q Function。
+左邊紅色線為初始狀態的第一步，將$S_t, a_t, r_t, S_{t+1}$給算出來並存放至記憶體裡面，第一步初始化做完之後，再進行藍色線的flow，通過環境來儲存$S_t, a_t, r_t, S_{t+1}$，並將參數丟給對應的網路來計算Loss Function，最後再更新網路的參數，一直不斷的重覆更新就可以找出最好的Q Function。
 
 #### Environment
 
