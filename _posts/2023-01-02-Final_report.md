@@ -44,7 +44,7 @@ $$R_t = r_{t+1}+r_{t+2}+r_{t+3}+ \cdots +r_T \text{，其中T表示最後一次�
 
 但當T趨近於無限大，則加總也會趨近於無限大，這並不是我們想要的，因此我們加入折扣因子(discount factor)的概念，決定當前獎勵與未來將勵的重要程度，數值介於0到1之間，0表示當前獎勵比較重要，1則代表未來獎勵比較重要，通常我們會讓數值介於0.2到0.8之間避免上述情況發生，完整數學式為：
 
-$$R_t = r_{t+1}+\gamma r_{t+2}+\gamma^2 r_{t+3}+ \cdots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}，\text{where} 0 \leq \gamma \leq 1$$
+$$R_t = r_{t+1}+\gamma r_{t+2}+\gamma^2 r_{t+3}+ \cdots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}，\text{where } 0 \leq \gamma \leq 1$$
 
 ### *狀態價值函數*
 判別運用策略 $\pi$ 後在某個狀態中的良好程度。通常用 $V(s)$ 來表示，意思是遵循某個策略後的狀態值。
