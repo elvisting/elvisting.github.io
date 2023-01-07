@@ -27,6 +27,8 @@ img_path:
 ### *研究目的*
 藉由實作DRQN學習Doom，註解範例程式碼，並比較他人製作的DDDQN學習法，使自己深入了解強化學習的運作以及程式設計。
 ## **理論與演算法**
+此章節陳述我們使用的理論以及演算法。
+
 ---
 ### *策略函數*
 根據目前狀態，決定執行的動作，說明在各狀態中應該要執行的動作，通常表示為 $ \pi(s):S->A $ 以下介紹三種策略：
@@ -136,7 +138,8 @@ $$
 ### *DQN-algorithm*
 Paper：[Playing Atari with Deep Reinforcement Learning](https://arxiv.org/abs/1312.5602)
 
-frame&words discription：
+Frame&Words discription：
+
 ![DQN_algorithm_word](/graph/DQN_algorithm_word.png){: w="350" h="700" .left}![DQN_algorithm](/graph/DQN_algorithm.png){: w="350" h="700" .left}_DQN_algorithm_words(left)&DQN_algorithm(right)_
 
 左邊紅色線為初始狀態的第一步，將 St, at, rt, S(t+1)給算出來並存放至記憶體裡面，第一步初始化做完之後，再進行藍色線的flow，通過環境來儲存St, at, rt, S(t+1)，並將參數丟給對應的網路來計算LOSS Function，最後再更新網路的參數，一直不斷的重覆更新就可以找出最好的Q Function。
@@ -206,7 +209,6 @@ DoubleDQN的原始演算法為：[Double Q-learning” (Hasselt, 2010)](https://
 ## **系統介紹與程式碼**
 
 由agent透過深度學習遊玩Doom，學習方法有DRQN和DDDQN，獎勵計算方式為成功擊殺怪物得到正項獎勵如果失血或損失子彈則是得到負向獎勵，期望最後的total_reward越來越高。
-
 
 ---
 ### *系統方塊圖*
@@ -645,16 +647,28 @@ DDDQN全名為Double Dueling Deep Q-Learning Network，是兩個演算法的結�
 [Deep Reinforcement learning Applied to DOOM](https://github.com/cactuar3101/Deep-Reinforcement-Learning-applied-to-DOOM) \[Fork\]<br>
 
 ## **成果、結論與未來展望**
+
+此章節展示我們的實作結果，對結果的論述以及未來目標。
+
 ---
+
 ### *成果展示*
 
 #### DRQN V.S. DDDQN(趨勢圖)
 
-![DDDQN_linechart_1](/graph/DDDQN_linechart_1.png){: w="350" h="700" .center}
-![DDDQN_linechart_2](/graph/DDDQN_linechart_2.png){: w="350" h="700" .center}_DDDQN_linechart_
+![DRQN_linechart_1](/graph/DRQN_linechart_1.png){: w="350" h="700" .center}
 
-<!-- ![DDDQN_linechart_1](/graph/DDDQN_linechart_1.png){: w="350" h="700" .center}
-![DDDQN_linechart_2](/graph/DDDQN_linechart_2.png){: w="350" h="700" .center}_DDDQN_linechart_ -->
+![DRQN_linechart_2](/graph/DRQN_linechart_2.png){: w="350" h="700" .center}_DRQN-linechart_
+
+![DDDQN_linechart_1](/graph/DDDQN_linechart_1.png){: w="350" h="700" .center}
+
+![DDDQN_linechart_2](/graph/DDDQN_linechart_2.png){: w="350" h="700" .center}_DDDQN-linechart_
+
+根據DDDQN的趨勢圖所顯示，彈藥使用量以及獎勵皆有上升趨勢，以及損失有下降趨勢，代表此演算法有助於訓練此遊戲。
+
+DRQN的趨勢圖在彈藥的使用量及獎勵皆有上升趨勢，但損失趨勢因為程式編寫關係導致呈現上升，總體來說，DRQN演算法也有助於訓練此遊戲。
+
+在趨勢圖上能看出DDDQN的上升穩定度及效能比DRQN來得穩定且較佳，這符合當初的預期。
 
 #### DRQN程式運行圖片
 
@@ -669,17 +683,21 @@ DDDQN全名為Double Dueling Deep Q-Learning Network，是兩個演算法的結�
 
 {% include embed/youtube.html id='28RMXN0h_5o' %}
 
-[運用DDDQN演算法遊玩遊戲實作影片]()
+[運用DDDQN演算法遊玩遊戲實作影片](https://youtu.be/B6kBbGwOOX8)
 
-{% include embed/youtube.html id='28RMXN0h_5o' %}
+{% include embed/youtube.html id='B6kBbGwOOX8' %}
 
 ### *結論與未來展望*
 
-我們可以發現在同樣次數下，
+這次的實作成功達成起初目的，當然要改進的地方還有很多，像是tensorboard的使用，這是在實作程式碼時發現的功能，可以直接將資訊呈現在圖表中，省下畫圖的時間，也讓我們很清楚的觀察實作結果，此外我們確實沒有完整了解演算法及程式的運做，導致在Debug的時候花了不少時間。
+
+未來目標希望可以運用其他強化學習的方法，來訓練Agent去玩DOOM，除了可以認識更多強化學習，也可以練習自己的程式能力，此外也可以改進我們的DRQN演算法，在書中提供了進階的版本--DARQN，並沒有提供任何程式碼，期許我們在了解此演算法後，能嘗試獨力完成，讓自己更熟悉強化學習的世界。
 
 ## **心得** 
 ---
 ### 李承恩
+
+
 
 ### 丁昱鈞
 
