@@ -127,12 +127,12 @@ $$
 
 其詳細步驟為：
 
-![Q-Learning](/graph/q_learning.jpg){: w="350" h="700" .center}_Q-Learning 流程圖_
+![Q-Learning](/graph/q_learning.jpg){: w="360" h="700" .center}_Q-Learning 流程圖_
 
 ### *Deep-Q-Network*
 簡單的架構圖如下：
 
-![DQN_frame](/graph/DQN_frame.png){: w="350" h="700" .center}_DQN_frame_
+![DQN_frame](/graph/DQN_frame.png){: w="360" h="700" .center}_DQN_frame_
 
 
 ### *DQN-algorithm*
