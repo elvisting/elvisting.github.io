@@ -79,7 +79,9 @@ $$\cal{P}^a_{ss'}=pr(s_{t+1}=s' \mid s_t{} = s, a_t=a)$$
 
 $\cal{R}^a_{ss'}$為執行動作$a$從狀態$s$移動到$s'$，收到的獎勵機率：
 
-$$ \cal{R}^a_{ss'}=\Bbb{E}[(\it{R_{t+\rm{1}}}) \mid s_t = s,s_{t+1}=s', a_t=a]$$
+$$ 
+\cal{R}^a_{ss'}=\Bbb{E}\left[(\it{R_{t+\rm{1}}}) \mid s_t = s,s_{t+1}=s', a_t=a\right]
+$$
 
 由於直接求法過於複雜，因此可以使用下列三種方法來求最佳策略。
 * 動態規劃(Dynamic programming，DP)
