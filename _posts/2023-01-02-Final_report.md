@@ -31,7 +31,7 @@ img_path:
 
 ---
 ### *策略函數*
-根據目前狀態，決定執行的動作，說明在各狀態中應該要執行的動作，通常表示為 $ \pi(s):S->A $ 以下介紹三種策略：
+根據目前狀態，決定執行的動作，說明在各狀態中應該要執行的動作，通常表示為 $ \pi(s):S \to A $ 以下介紹三種策略：
 1. Stochastic Polic: $a \sim \pi (a\mid s)=P(a \mid s)，s \in S$
 2. Deterministic Policy: $a = \pi(s)$(ex: greedy )
 3. Random Policy: $a = rand(A)$ ，行為的選擇是隨機的(ex: $\epsilon-greedy$ )
